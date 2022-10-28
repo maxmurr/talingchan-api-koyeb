@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique @db.VarChar(30)
+  tel      String    @unique @db.VarChar(10)
+  invoices Invoice[]
+}
+
+model Employee {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique @db.VarChar(30)
+  position String    @db.VarChar(20)
+  tel      String    @unique @db.VarChar(10)
+  invoices Invoice[]
+}
+
+model Product {
+  id    Int    @id @default(autoincrement())
+  name  String @unique @db.VarChar(120)
+  price Float  @db.Double
+  description String @db.Text
+  picture String @db.VarChar(512)
+  lots  Lot[]
+}
+
+model Unit {
+  id            Int             @id @default(autoincrement())
+  detail        String          @db.VarChar(20)
+  lots          Lot[]
+  invoiceDetail InvoiceDetail[]
+}
+
+model Invoice {
+  id            Int             @id @default(autoincrement())
+  status        String          @db.VarChar(20)
+  date          DateTime        @default(now())
+  customer      Customer        @relation(fields: [customerId], references: [id])
+  customerId    Int
+  employee      Employee        @relation(fields: [employeeId], references: [id])
+  employeeId    Int
+  invoiceDetail InvoiceDetail[]
+}
+
+model Lot {
+  id            Int             @id @default(autoincrement())
+  date          DateTime        @default(now())
+  quantity      Float           @db.Double
+  invoiceDetail InvoiceDetail[]
+  unit          Unit            @relation(fields: [unitId], references: [id])
+  unitId        Int
+  product       Product         @relation(fields: [productId], references: [id])
+  productId     Int
+}
+
+model InvoiceDetail {
+  id        Int     @id @default(autoincrement())
+  quantity  Float   @db.Double
+  price     String  @db.VarChar(6)
+  unit      Unit    @relation(fields: [unitId], references: [id])
+  unitId    Int
+  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoiceId Int
+  lot       Lot     @relation(fields: [lotId], references: [id])
+  lotId     Int
+}
