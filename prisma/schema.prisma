@@ -10,67 +10,67 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Customer {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique @db.VarChar(30)
-  tel      String    @unique @db.VarChar(10)
-  invoices Invoice[]
+model customer {
+  CID      Int       @id @default(autoincrement())
+  CName    String    @unique @db.VarChar(30)
+  CTel     String    @unique @db.VarChar(10)
+  invoices invoice[]
 }
 
-model Employee {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique @db.VarChar(30)
-  position String    @db.VarChar(20)
-  tel      String    @unique @db.VarChar(10)
-  invoices Invoice[]
+model employee {
+  EmpID       Int       @id @default(autoincrement())
+  EmpName     String    @unique @db.VarChar(30)
+  EmpPosition String    @db.VarChar(20)
+  EmpTel      String    @unique @db.VarChar(10)
+  EmpPassword String    @db.VarChar(20)
+  invoices    invoice[]
 }
 
-model Product {
-  id    Int    @id @default(autoincrement())
-  name  String @unique @db.VarChar(120)
-  price Float  @db.Double
-  description String @db.Text
-  picture String @db.VarChar(512)
-  lots  Lot[]
+model product {
+  PID          Int    @id @default(autoincrement())
+  PName        String @unique @db.VarChar(120)
+  PPrice       Float  @db.Double
+  PDescription String @db.Text
+  PPicture     String @db.VarChar(512)
+  lots         lot[]
 }
 
-model Unit {
-  id            Int             @id @default(autoincrement())
-  detail        String          @db.VarChar(20)
-  lots          Lot[]
-  invoiceDetail InvoiceDetail[]
+model unit {
+  UID             Int              @id @default(autoincrement())
+  UDetail         String           @db.VarChar(20)
+  lots            lot[]
+  invoice_details invoice_detail[]
 }
 
-model Invoice {
-  id            Int             @id @default(autoincrement())
-  status        String          @db.VarChar(20)
-  date          DateTime        @default(now())
-  customer      Customer        @relation(fields: [customerId], references: [id])
-  customerId    Int
-  employee      Employee        @relation(fields: [employeeId], references: [id])
-  employeeId    Int
-  invoiceDetail InvoiceDetail[]
+model invoice {
+  IID             Int              @id @default(autoincrement())
+  IStatus         String           @db.VarChar(20)
+  IDate           DateTime         @default(now())
+  customer        customer         @relation(fields: [CID], references: [CID])
+  CID             Int
+  employee        employee         @relation(fields: [EmpID], references: [EmpID])
+  EmpID           Int
+  invoice_details invoice_detail[]
 }
 
-model Lot {
-  id            Int             @id @default(autoincrement())
-  date          DateTime        @default(now())
-  quantity      Float           @db.Double
-  invoiceDetail InvoiceDetail[]
-  unit          Unit            @relation(fields: [unitId], references: [id])
-  unitId        Int
-  product       Product         @relation(fields: [productId], references: [id])
-  productId     Int
+model lot {
+  LotID           Int              @id @default(autoincrement())
+  LotDate         DateTime         @default(now())
+  LotQty          Float            @db.Double
+  invoice_details invoice_detail[]
+  unit            unit             @relation(fields: [UID], references: [UID])
+  UID             Int
+  product         product          @relation(fields: [PID], references: [PID])
+  PID             Int
 }
 
-model InvoiceDetail {
-  id        Int     @id @default(autoincrement())
-  quantity  Float   @db.Double
-  price     String  @db.VarChar(6)
-  unit      Unit    @relation(fields: [unitId], references: [id])
-  unitId    Int
-  invoice   Invoice @relation(fields: [invoiceId], references: [id])
-  invoiceId Int
-  lot       Lot     @relation(fields: [lotId], references: [id])
-  lotId     Int
+model invoice_detail {
+  INVQty   Float   @db.Double
+  INVPrice String  @db.VarChar(6)
+  unit     unit    @relation(fields: [UID], references: [UID])
+  UID      Int
+  invoice  invoice @relation(fields: [IID], references: [IID])
+  IID      Int     @id
+  lot      lot     @relation(fields: [LotID], references: [LotID])
+  LotID    Int
 }
