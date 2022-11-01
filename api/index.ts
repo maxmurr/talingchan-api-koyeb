@@ -60,10 +60,10 @@ app.get(
   "/customers/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const { CID } = req.params;
       const customer = await prisma.customer.findUnique({
         where: {
-          id: Number(id),
+          CID: Number(CID),
         },
       });
       res.status(200).json(customer);
