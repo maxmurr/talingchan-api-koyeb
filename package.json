@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon api/index.ts",
-    "start": "prisma migrate deploy && npx prisma generate && ts-node api/index.ts",
-    "build": "prisma generate && prisma migrate deploy"
+    "start": "npx prisma generate && ts-node api/index.ts",
+    "build": "prisma generate && npx prisma migrate dev --name deploy"
   },
   "keywords": [],
   "author": "",
