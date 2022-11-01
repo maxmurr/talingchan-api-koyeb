@@ -20,16 +20,16 @@ app.post(
   "/customers",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, tel } = req.body;
+      const { CName, CTel } = req.body;
       const createdCustomer = await prisma.customer.create({
         data: {
-          name,
-          tel,
+          CName,
+          CTel,
         },
       });
       res.json({
         createdCustomer,
-        message: `Created customer with id: ${createdCustomer.id}, successfully`
+        message: `Created customer with id: ${createdCustomer.CID}, successfully`
       });
     } catch (error: any) {
       console.log(error.message);
@@ -79,20 +79,20 @@ app.put(
   "/customers/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, tel } = req.body;
-      const { id } = req.params;
+      const { CName, CTel } = req.body;
+      const { CID } = req.params;
       const updatedCustomer = await prisma.customer.update({
         where: {
-          id: Number(id),
+          CID: Number(CID),
         },
         data: {
-          name,
-          tel,
+          CName,
+          CTel,
         },
       })
       res.status(200).json({
         updatedCustomer,
-        message: `Updated customer with id: ${updatedCustomer.id}, successfully`
+        message: `Updated customer with id: ${updatedCustomer.CID}, successfully`
       })
     } catch (error) {
       res.status(500).json({
@@ -106,15 +106,15 @@ app.delete(
   "/customers/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const { CID } = req.params;
       const deletedCustomer = await prisma.customer.delete({
         where: {
-          id: Number(id),
+          CID: Number(CID),
         },
       });
       res.status(200).json({
         deletedCustomer,
-        message: `Deleted customer with id: ${deletedCustomer.id}, successfully`
+        message: `Deleted customer with id: ${deletedCustomer.CID}, successfully`
       });
     } catch (error) {
       res.status(500).json({
@@ -130,17 +130,18 @@ app.post(
   "/employees",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, position, tel } = req.body;
+      const { EmpName, EmpPosition, EmpTel, EmpPassword } = req.body;
       const createdEmployee = await prisma.employee.create({
         data: {
-          name,
-          position,
-          tel,
+          EmpName,
+          EmpPosition,
+          EmpTel,
+          EmpPassword
         },
       });
       res.json({
         createdEmployee,
-        message: `Created employee with id: ${createdEmployee.id}, successfully`
+        message: `Created employee with id: ${createdEmployee.EmpID}, successfully`
       });
     } catch (error: any) {
       console.log(error.message);
@@ -169,10 +170,10 @@ app.get(
   "/employees/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const { EmpID } = req.params;
       const employee = await prisma.employee.findUnique({
         where: {
-          id: Number(id),
+          EmpID: Number(EmpID),
         },
       });
       res.status(200).json(employee);
@@ -188,21 +189,22 @@ app.put(
   "/employees/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, position, tel } = req.body;
-      const { id } = req.params;
+      const { EmpName, EmpPosition, EmpTel, EmpPassword } = req.body;
+      const { EmpID } = req.params;
       const updatedEmployee = await prisma.employee.update({
         where: {
-          id: Number(id),
+          EmpID: Number(EmpID),
         },
         data: {
-          name,
-          position,
-          tel,
+          EmpName,
+          EmpPosition,
+          EmpTel,
+          EmpPassword
         },
       });
       res.status(200).json({
         updatedEmployee,
-        message: `Updated employee with id: ${updatedEmployee.id}, successfully`
+        message: `Updated employee with id: ${updatedEmployee.EmpID}, successfully`
       });
     } catch (error) {
       res.status(500).json({
@@ -216,15 +218,15 @@ app.delete(
   "/employees/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const { EmpID } = req.params;
       const deletedEmployee = await prisma.employee.delete({
         where: {
-          id: Number(id),
+          EmpID: Number(EmpID),
         },
       });
       res.status(200).json({
         deletedEmployee,
-        message: `Deleted employee with id: ${deletedEmployee.id}, successfully`
+        message: `Deleted employee with id: ${deletedEmployee.EmpID}, successfully`
       });
     } catch (error) {
       res.status(500).json({
@@ -240,18 +242,18 @@ app.post(
   "/products",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, price, description, picture } = req.body;
+      const { PName, PPrice, PDescription, PPicture } = req.body;
       const createdProduct = await prisma.product.create({
         data: {
-          name,
-          price,
-          picture,
-          description,
+          PName,
+          PPrice,
+          PPicture,
+          PDescription,
         },
       });
       res.json({
         createdProduct,
-        message: `Created product with id: ${createdProduct.id}, successfully`
+        message: `Created product with id: ${createdProduct.PID}, successfully`
       });
     } catch (error: any) {
       console.log(error.message);
@@ -267,7 +269,7 @@ app.get(
   async function (req: Request, res: Response, next: NextFunction) {
     try {
       const products = await prisma.product.findMany();
-      res.status(200).json({products});
+      res.status(200).json({ products });
     } catch (error) {
       res.status(500).json({
         message: "Something went wrong",
@@ -280,10 +282,10 @@ app.get(
   "/products/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const { PID } = req.params;
       const product = await prisma.product.findUnique({
         where: {
-          id: Number(id),
+          PID: Number(PID),
         },
       });
       res.status(200).json(product);
@@ -299,20 +301,20 @@ app.put(
   "/products/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, price } = req.body;
-      const { id } = req.params;
+      const { PName, PPrice, PPicture, PDescription } = req.body;
+      const { PID } = req.params;
       const updatedProduct = await prisma.product.update({
         where: {
-          id: Number(id),
+          PID: Number(PID),
         },
         data: {
-          name,
-          price,
+          PName,
+          PPrice,
         },
       });
       res.status(200).json({
         updatedProduct,
-        message: `Updated product with id: ${updatedProduct.id}, successfully`
+        message: `Updated product with id: ${updatedProduct.PID}, successfully`
       });
     } catch (error) {
       res.status(500).json({
@@ -326,15 +328,15 @@ app.delete(
   "/products/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const { PID } = req.params;
       const deletedProduct = await prisma.product.delete({
         where: {
-          id: Number(id),
+          PID: Number(PID),
         },
       });
       res.status(200).json({
         deletedProduct,
-        message: `Deleted product with id: ${deletedProduct.id}, successfully`
+        message: `Deleted product with id: ${deletedProduct.PID}, successfully`
       });
     } catch (error) {
       res.status(500).json({
@@ -350,15 +352,15 @@ app.post(
   "/units",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { detail } = req.body;
+      const { UDetail } = req.body;
       const createdUnit = await prisma.unit.create({
         data: {
-          detail,
+          UDetail,
         },
       });
       res.json({
         createdUnit,
-        message: `Created unit with id: ${createdUnit.id}, successfully`
+        message: `Created unit with id: ${createdUnit.UID}, successfully`
       });
     } catch (error: any) {
       console.log(error.message);
@@ -387,10 +389,10 @@ app.get(
   "/units/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const { UID } = req.params;
       const unit = await prisma.unit.findUnique({
         where: {
-          id: Number(id),
+          UID: Number(UID),
         },
       });
       res.status(200).json(unit);
@@ -406,19 +408,19 @@ app.put(
   "/units/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { detail } = req.body;
-      const { id } = req.params;
+      const { UDetail } = req.body;
+      const { UID } = req.params;
       const updatedUnit = await prisma.unit.update({
         where: {
-          id: Number(id),
+          UID: Number(UID),
         },
         data: {
-          detail,
+          UDetail,
         },
       });
       res.status(200).json({
         updatedUnit,
-        message: `Updated unit with id: ${updatedUnit.id}, successfully`
+        message: `Updated unit with id: ${updatedUnit.UID}, successfully`
       });
     } catch (error) {
       res.status(500).json({
@@ -432,15 +434,15 @@ app.delete(
   "/units/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const { UID } = req.params;
       const deletedUnit = await prisma.unit.delete({
         where: {
-          id: Number(id),
+          UID: Number(UID),
         },
       });
       res.status(200).json({
         deletedUnit,
-        message: `Deleted unit with id: ${deletedUnit.id}, successfully`
+        message: `Deleted unit with id: ${deletedUnit.UID}, successfully`
       });
     } catch (error) {
       res.status(500).json({
@@ -461,7 +463,7 @@ app.post(
       })
       res.status(200).json({
         createdInvoice,
-        message: `Created invoice with id: ${createdInvoice.id}, successfully`
+        message: `Created invoice with id: ${createdInvoice.IID}, successfully`
       });
     } catch (error) {
       res.status(500).json({
@@ -489,10 +491,10 @@ app.get(
   "/invoices/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
+      const { IID } = req.params
       const invoice = await prisma.invoice.findUnique({
         where: {
-          id: Number(id)
+          IID: Number(IID)
         }
       });
       res.status(200).json(invoice)
@@ -508,21 +510,22 @@ app.put(
   "/invoices/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
-      const { status, customerId, employeeId } = req.body
+      const { IID } = req.params
+      const { IStatus, IDate, CID, EmpID } = req.body
       const updatedInvoice = await prisma.invoice.update({
         where: {
-          id: Number(id),
+          IID: Number(IID),
         },
         data: {
-          status,
-          customerId,
-          employeeId
+          IStatus,
+          IDate,
+          CID,
+          EmpID
         }
       })
       res.status(200).json({
         updatedInvoice,
-        message: `Updated invoice with id: ${updatedInvoice.id}, successfully`
+        message: `Updated invoice with id: ${updatedInvoice.IID}, successfully`
       })
     } catch (error) {
       res.status(500).json({
@@ -536,15 +539,15 @@ app.delete(
   "/invoices/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
+      const { IID } = req.params
       const deletedInvoice = await prisma.invoice.delete({
         where: {
-          id: Number(id),
+          IID: Number(IID),
         }
       })
       res.status(200).json({
         deletedInvoice,
-        message: `Deleted invoice with id: ${deletedInvoice.id}, successfully`
+        message: `Deleted invoice with id: ${deletedInvoice.IID}, successfully`
       })
     } catch (error) {
       res.status(500).json({
@@ -565,7 +568,7 @@ app.post(
       })
       res.status(200).json({
         createdLot,
-        message: `Created lot with id: ${createdLot.id}, successfully`
+        message: `Created lot with id: ${createdLot.LotID}, successfully`
       })
     } catch (error) {
       res.status(500).json({
@@ -593,10 +596,10 @@ app.get(
   "/lots/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
+      const { LotID } = req.params
       const lot = await prisma.lot.findUnique({
         where: {
-          id: Number(id)
+          LotID: Number(LotID)
         }
       })
       res.status(200).json(lot)
@@ -612,16 +615,16 @@ app.put(
   "/lots/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
+      const { LotID } = req.params
       const updatedLot = await prisma.lot.update({
         where: {
-          id: Number(id)
+          LotID: Number(LotID)
         },
         data: req.body
       })
       res.status(200).json({
         updatedLot,
-        message: `Updated lot with id: ${updatedLot.id}, successfully`
+        message: `Updated lot with id: ${updatedLot.LotID}, successfully`
       })
     } catch (error) {
       res.status(500).json({
@@ -635,15 +638,15 @@ app.delete(
   "/lots/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
+      const { LotID } = req.params
       const deletedLot = await prisma.lot.delete({
         where: {
-          id: Number(id)
+          LotID: Number(LotID)
         }
       })
       res.status(200).json({
         deletedLot,
-        message: `Deleted lot with id: ${deletedLot.id}, successfully`
+        message: `Deleted lot with id: ${deletedLot.LotID}, successfully`
       })
     } catch (error) {
       res.status(500).json({
@@ -656,15 +659,15 @@ app.delete(
 // InvoiceDetail
 
 app.post(
-  "/invoiceDetail",
+  "/invoice_details",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const createdInvoiceDetail = await prisma.invoiceDetail.create({
+      const createdInvoiceDetail = await prisma.invoice_detail.create({
         data: req.body
       })
       res.status(200).json({
         createdInvoiceDetail,
-        message: `Created invoiceDetail with id: ${createdInvoiceDetail.id}, successfully`
+        message: `Created invoiceDetail with invoice id: ${createdInvoiceDetail.IID}, successfully`
       })
     } catch (error) {
       res.status(500).json({
@@ -675,10 +678,10 @@ app.post(
 )
 
 app.get(
-  "/invoiceDetail",
+  "/invoice_details",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const invoiceDetail = await prisma.invoiceDetail.findMany()
+      const invoiceDetail = await prisma.invoice_detail.findMany()
       res.status(200).json(invoiceDetail)
     } catch (error) {
       res.status(500).json({
@@ -689,13 +692,13 @@ app.get(
 )
 
 app.get(
-  "/invoiceDetail/:id",
+  "/invoice_details/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
-      const invoiceDetail = await prisma.invoiceDetail.findUnique({
+      const { IID } = req.params
+      const invoiceDetail = await prisma.invoice_detail.findUnique({
         where: {
-          id: Number(id)
+          IID: Number(IID)
         }
       })
       res.status(200).json(invoiceDetail)
@@ -708,19 +711,19 @@ app.get(
 )
 
 app.put(
-  "/invoiceDetail/:id",
+  "/invoice_details/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
-      const updatedInvoiceDetail = await prisma.invoiceDetail.update({
+      const { IID } = req.params
+      const updatedInvoiceDetail = await prisma.invoice_detail.update({
         where: {
-          id: Number(id),
+          IID: Number(IID),
         },
         data: req.body
       })
       res.status(200).json({
         updatedInvoiceDetail,
-        message: `Updated invoiceDetail with id: ${updatedInvoiceDetail.id}, successfully`
+        message: `Updated invoiceDetail with invoice id: ${updatedInvoiceDetail.IID}, successfully`
       })
     } catch (error) {
       res.status(500).json({
@@ -731,18 +734,18 @@ app.put(
 )
 
 app.delete(
-  "/invoiceDetail/:id",
+  "/invoice_details/:id",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
-      const deletedInvoiceDetail = await prisma.invoiceDetail.delete({
+      const { IID } = req.params
+      const deletedInvoiceDetail = await prisma.invoice_detail.delete({
         where: {
-          id: Number(id),
+          IID: Number(IID),
         }
       })
       res.status(200).json({
         deletedInvoiceDetail,
-        message: `Deleted invoiceDetail with id: ${deletedInvoiceDetail.id}, successfully`
+        message: `Deleted invoiceDetail with invoice id: ${deletedInvoiceDetail.IID}, successfully`
       })
     } catch (error) {
       res.status(500).json({
