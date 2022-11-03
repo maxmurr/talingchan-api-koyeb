@@ -2,12 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
+
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
@@ -66,12 +67,13 @@ model lot {
 }
 
 model invoice_detail {
+  INVID    Int     @id @default(autoincrement())
   INVQty   Float   @db.Double
   INVPrice String  @db.VarChar(6)
   unit     unit    @relation(fields: [UID], references: [UID])
   UID      Int
   invoice  invoice @relation(fields: [IID], references: [IID])
-  IID      Int     @id
+  IID      Int
   lot      lot     @relation(fields: [LotID], references: [LotID])
   LotID    Int
 }

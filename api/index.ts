@@ -700,13 +700,13 @@ app.get(
 );
 
 app.get(
-  "/invoiceDetails/:IID",
+  "/invoiceDetails/:INVID",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { IID } = req.params;
+      const { INVID } = req.params;
       const invoiceDetail = await prisma.invoice_detail.findUnique({
         where: {
-          IID: Number(IID),
+          INVID: Number(INVID),
         },
       });
       res.status(200).json(invoiceDetail);
@@ -719,13 +719,13 @@ app.get(
 );
 
 app.put(
-  "/invoiceDetails/:IID",
+  "/invoiceDetails/:INVID",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { IID } = req.params;
+      const { INVID } = req.params;
       const updatedInvoiceDetail = await prisma.invoice_detail.update({
         where: {
-          IID: Number(IID),
+          INVID: Number(INVID),
         },
         data: req.body,
       });
@@ -742,13 +742,13 @@ app.put(
 );
 
 app.delete(
-  "/invoiceDetails/:IID",
+  "/invoiceDetails/:INVID",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { IID } = req.params;
+      const { INVID } = req.params;
       const deletedInvoiceDetail = await prisma.invoice_detail.delete({
         where: {
-          IID: Number(IID),
+          INVID: Number(INVID),
         },
       });
       res.status(200).json({
