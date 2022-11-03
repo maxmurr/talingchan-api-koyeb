@@ -34,13 +34,12 @@ model product {
   PPrice       Float  @db.Double
   PDescription String @db.Text
   PPicture     String @db.VarChar(512)
-  lots         lot[]
+  PInStock     Int    @db.Int
 }
 
 model unit {
   UID             Int              @id @default(autoincrement())
   UDetail         String           @db.VarChar(20)
-  lots            lot[]
   invoice_details invoice_detail[]
 }
 
@@ -55,17 +54,6 @@ model invoice {
   invoice_details invoice_detail[]
 }
 
-model lot {
-  LotID           Int              @id @default(autoincrement())
-  LotDate         DateTime         @default(now())
-  LotQty          Float            @db.Double
-  invoice_details invoice_detail[]
-  unit            unit             @relation(fields: [UID], references: [UID])
-  UID             Int
-  product         product          @relation(fields: [PID], references: [PID])
-  PID             Int
-}
-
 model invoice_detail {
   INVID    Int     @id @default(autoincrement())
   INVQty   Float   @db.Double
@@ -74,6 +62,4 @@ model invoice_detail {
   UID      Int
   invoice  invoice @relation(fields: [IID], references: [IID])
   IID      Int
-  lot      lot     @relation(fields: [LotID], references: [LotID])
-  LotID    Int
 }
