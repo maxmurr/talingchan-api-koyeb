@@ -242,13 +242,14 @@ app.post(
   "/products",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { PName, PPrice, PDescription, PPicture } = req.body;
+      const { PName, PPrice, PDescription, PPicture, PInStock } = req.body;
       const createdProduct = await prisma.product.create({
         data: {
           PName,
           PPrice,
           PPicture,
           PDescription,
+          PInStock,
         },
       });
       res.json({
@@ -301,7 +302,7 @@ app.put(
   "/products/:PID",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { PName, PPrice, PPicture, PDescription } = req.body;
+      const { PName, PPrice, PPicture, PDescription,PInStock } = req.body;
       const { PID } = req.params;
       const updatedProduct = await prisma.product.update({
         where: {
@@ -312,6 +313,7 @@ app.put(
           PPrice,
           PPicture,
           PDescription,
+          PInStock,
         },
       });
       res.status(200).json({
@@ -550,111 +552,6 @@ app.delete(
       res.status(200).json({
         deletedInvoice,
         message: `Deleted invoice with IID: ${deletedInvoice.IID}, successfully`,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: "Something went wrong",
-      });
-    }
-  }
-);
-
-// Lot
-
-app.post(
-  "/lots",
-  async function (req: Request, res: Response, next: NextFunction) {
-    try {
-      const createdLot = await prisma.lot.create({
-        data: req.body,
-      });
-      res.status(200).json({
-        createdLot,
-        message: `Created lot with LotID: ${createdLot.LotID}, successfully`,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: "Something went wrong",
-      });
-    }
-  }
-);
-
-app.get(
-  "/lots",
-  async function (req: Request, res: Response, next: NextFunction) {
-    try {
-      const lots = await prisma.lot.findMany({
-        orderBy: [
-          {
-            LotDate: "asc",
-          },
-        ],
-      });
-      res.status(200).json(lots);
-    } catch (error) {
-      res.status(500).json({
-        message: "Something went wrong",
-      });
-    }
-  }
-);
-
-app.get(
-  "/lots/:LotID",
-  async function (req: Request, res: Response, next: NextFunction) {
-    try {
-      const { LotID } = req.params;
-      const lot = await prisma.lot.findUnique({
-        where: {
-          LotID: Number(LotID),
-        },
-      });
-      res.status(200).json(lot);
-    } catch (error) {
-      res.status(500).json({
-        message: "Something went wrong",
-      });
-    }
-  }
-);
-
-app.put(
-  "/lots/:LotID",
-  async function (req: Request, res: Response, next: NextFunction) {
-    try {
-      const { LotID } = req.params;
-      const updatedLot = await prisma.lot.update({
-        where: {
-          LotID: Number(LotID),
-        },
-        data: req.body,
-      });
-      res.status(200).json({
-        updatedLot,
-        message: `Updated lot with LotID: ${updatedLot.LotID}, successfully`,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: "Something went wrong",
-      });
-    }
-  }
-);
-
-app.delete(
-  "/lots/:LotID",
-  async function (req: Request, res: Response, next: NextFunction) {
-    try {
-      const { LotID } = req.params;
-      const deletedLot = await prisma.lot.delete({
-        where: {
-          LotID: Number(LotID),
-        },
-      });
-      res.status(200).json({
-        deletedLot,
-        message: `Deleted lot with LotID: ${deletedLot.LotID}, successfully`,
       });
     } catch (error) {
       res.status(500).json({
