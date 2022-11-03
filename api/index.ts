@@ -718,6 +718,25 @@ app.get(
   }
 );
 
+app.get(
+  "/invoiceDetails/invoice/:IID",
+  async function (req: Request, res: Response, next: NextFunction) {
+    try {
+      const { IID } = req.params;
+      const invoiceDetail = await prisma.invoice_detail.findMany({
+        where: {
+          IID: Number(IID),
+        },
+      });
+      res.status(200).json(invoiceDetail);
+    } catch (error) {
+      res.status(500).json({
+        message: "Something went wrong",
+      });
+    }
+  }
+);
+
 app.put(
   "/invoiceDetails/:INVID",
   async function (req: Request, res: Response, next: NextFunction) {
