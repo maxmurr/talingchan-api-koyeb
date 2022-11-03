@@ -34,7 +34,7 @@ model product {
   PPrice       Float  @db.Double
   PDescription String @db.Text
   PPicture     String @db.VarChar(512)
-  PInStock     Int    @db.Int
+  PInStock     Int    @db.Int @default(0)
 }
 
 model unit {
