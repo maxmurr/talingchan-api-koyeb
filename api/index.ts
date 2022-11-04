@@ -75,6 +75,25 @@ app.get(
   }
 );
 
+app.get(
+  "/customers_tel/:CTel",
+  async function (req: Request, res: Response, next: NextFunction) {
+    try {
+      const { CTel } = req.params;
+      const customer = await prisma.customer.findUnique({
+        where: {
+          CTel: CTel,
+        },
+      });
+      res.status(200).json(customer);
+    } catch (error) {
+      res.status(500).json({
+        message: "Something went wrong",
+      });
+    }
+  }
+);
+
 app.put(
   "/customers/:CID",
   async function (req: Request, res: Response, next: NextFunction) {
