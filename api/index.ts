@@ -242,7 +242,7 @@ app.post(
   "/products",
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const { PName, PPrice, PDescription, PPicture, PInStock } = req.body;
+      const { PName, PPrice, PDescription, PPicture, PInStock, UID } = req.body;
       const createdProduct = await prisma.product.create({
         data: {
           PName,
@@ -250,6 +250,7 @@ app.post(
           PPicture,
           PDescription,
           PInStock,
+          UID,
         },
       });
       res.json({

@@ -34,13 +34,16 @@ model product {
   PPrice       Float  @db.Double
   PDescription String @db.Text
   PPicture     String @db.VarChar(512)
-  PInStock     Int    @db.Int @default(0)
+  PInStock     Int    @default(0) @db.Int
+  unit         unit   @relation(fields: [UID], references: [UID])
+  UID          Int
 }
 
 model unit {
   UID             Int              @id @default(autoincrement())
   UDetail         String           @db.VarChar(20)
   invoice_details invoice_detail[]
+  product         product[]
 }
 
 model invoice {

@@ -29,6 +29,8 @@ CREATE TABLE `product` (
     `PPrice` DOUBLE NOT NULL,
     `PDescription` TEXT NOT NULL,
     `PPicture` VARCHAR(512) NOT NULL,
+    `PInStock` INTEGER NOT NULL DEFAULT 0,
+    `UID` INTEGER NOT NULL,
 
     UNIQUE INDEX `product_PName_key`(`PName`),
     PRIMARY KEY (`PID`)
@@ -54,24 +56,12 @@ CREATE TABLE `invoice` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `lot` (
-    `LotID` INTEGER NOT NULL AUTO_INCREMENT,
-    `LotDate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `LotQty` DOUBLE NOT NULL,
-    `UID` INTEGER NOT NULL,
-    `PID` INTEGER NOT NULL,
-
-    PRIMARY KEY (`LotID`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `invoice_detail` (
     `INVID` INTEGER NOT NULL AUTO_INCREMENT,
     `INVQty` DOUBLE NOT NULL,
     `INVPrice` VARCHAR(6) NOT NULL,
     `UID` INTEGER NOT NULL,
     `IID` INTEGER NOT NULL,
-    `LotID` INTEGER NOT NULL,
 
     PRIMARY KEY (`INVID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
