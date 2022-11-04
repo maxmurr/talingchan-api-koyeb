@@ -37,12 +37,12 @@ model product {
   PInStock     Int    @default(0) @db.Int
   unit         unit   @relation(fields: [UID], references: [UID])
   UID          Int
+  invoice_detail invoice_detail[]
 }
 
 model unit {
   UID             Int              @id @default(autoincrement())
   UDetail         String           @db.VarChar(20)
-  invoice_details invoice_detail[]
   product         product[]
 }
 
@@ -61,8 +61,8 @@ model invoice_detail {
   INVID    Int     @id @default(autoincrement())
   INVQty   Float   @db.Double
   INVPrice String  @db.VarChar(6)
-  unit     unit    @relation(fields: [UID], references: [UID])
-  UID      Int
+  product     product    @relation(fields: [PID], references: [PID])
+  PID      Int
   invoice  invoice @relation(fields: [IID], references: [IID])
   IID      Int
 }
