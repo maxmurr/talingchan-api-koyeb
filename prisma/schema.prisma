@@ -24,7 +24,6 @@ model employee {
   EmpName     String    @unique @db.VarChar(30)
   EmpPosition String    @db.VarChar(20)
   EmpTel      String    @unique @db.VarChar(10)
-  EmpPassword String    @db.VarChar(20)
   invoices    invoice[]
 }
 
