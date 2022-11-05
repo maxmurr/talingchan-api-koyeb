@@ -723,4 +723,23 @@ app.delete(
   }
 );
 
+app.get(
+  "/report_product",
+  async function (req: Request, res: Response, next: NextFunction) {
+    try {
+      const report_product = await prisma.invoice_detail.groupBy({
+        by: ["PID"],
+        _sum: {
+          INVQty: true,
+        },
+      });
+      res.status(200).json(report_product);
+    } catch (error) {
+      res.status(500).json({
+        message: "Something went wrong",
+      });
+    }
+  }
+);
+
 app.listen(8080, () => console.log(`Server ready at: http://localhost:8080`));
