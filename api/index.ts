@@ -348,6 +348,32 @@ app.put(
   }
 );
 
+app.put(
+  "/products_instock/:PID",
+  async function (req: Request, res: Response, next: NextFunction) {
+    try {
+      const { PInStock} = req.body;
+      const { PID } = req.params;
+      const updatedProduct = await prisma.product.update({
+        where: {
+          PID: Number(PID),
+        },
+        data: {
+         PInStock:  Number(PInStock)
+        },
+      });
+      res.status(200).json({
+        updatedProduct,
+        message: `Updated product instock with PID: ${updatedProduct.PID}, successfully`,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Something went wrong",
+      });
+    }
+  }
+);
+
 app.delete(
   "/products/:PID",
   async function (req: Request, res: Response, next: NextFunction) {
